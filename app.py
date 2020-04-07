@@ -1,7 +1,7 @@
 #importing
 #import <filename>
 #from filename import <.....>
-from flask import Flask
+from flask import Flask, render_template
 
 #calling/instanciating
 app = Flask(__name__)
@@ -54,6 +54,26 @@ def multiplying (p, t):
 @app.route('/bio/<name>/<age>/<town>')
 def my_story(name, age, town):
     return f'My name is: {name} <p> I am {age} Years Old <p>  I live in: {town}'
+
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
+@app.route('/about_us')
+def about_uss():
+    return render_template('about.html')
+
+@app.route('/service')
+def service():
+    return render_template('service.html')
+
+@app.route('/inventories')
+def inventories():
+    return render_template('inventories.html')
+
+@app.route('/contact_us')
+def contact_us():
+    return render_template('contact.html')
 
 #run your app
 if __name__ == '__main__':
