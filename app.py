@@ -1,7 +1,7 @@
 #importing
 #import <filename>
 #from filename import <.....>
-from flask import Flask, render_template
+from flask import Flask, render_template ,request,redirect,url_for
 
 #calling/instanciating
 app = Flask(__name__)
@@ -14,21 +14,21 @@ app = Flask(__name__)
 def hello_world():
     return '<h1>Welcome to web Development</h1>'
 
-@app.route('/home')
-def home():
-    return '<h1>Welcome to my Home Page</h1>'
+#@app.route('/home')
+#def home():
+    #return '<h1>Welcome to my Home Page</h1>'
 
-@app.route('/about')
-def about():
-    return '<h1>About Us</h1>'
+#@app.route('/about')
+#def about():
+    #return '<h1>About Us</h1>'
 
-@app.route('/services')
-def services():
-    return '<h1>our Services</h1>'
+#@app.route('/services')
+#def services():
+    #return '<h1>our Services</h1>'
 
-@app.route('/contact')
-def contact():
-    return '<h1>Contact Us</h1>'
+#@app.route('/contact')
+#def contact():
+    #return '<h1>Contact Us</h1>'
 
 @app.route ('/name/<name>')
 def my_name(name):
@@ -67,8 +67,23 @@ def about_uss():
 def service():
     return render_template('service.html')
 
-@app.route('/inventories')
+@app.route('/inventories',methods= ['GET','POST'])
 def inventories():
+    if request.method=='POST':
+        name= request.form['name']
+        inv_type= request.form['type']
+        buying_price= request.form['buying_price']
+        selling_price= request.form['selling_price']
+
+        print(name)
+        print(inv_type)
+        print(buying_price)
+        print(selling_price)
+
+        return redirect(url_for('inventories'))
+        
+
+
     return render_template('inventories.html')
 
 @app.route('/contact_us')
