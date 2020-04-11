@@ -2,18 +2,41 @@
 #import <filename>
 #from filename import <.....>
 from flask import Flask, render_template ,request,redirect,url_for
+from flask_sqlalchemy import SQLAlchemy
+
+from Config.Config import Development, Production
+
 
 import pygal
 
 import psycopg2
 
 
+
+
 #calling/instanciating
 app = Flask(__name__)
 
+
+#Loading configurations
+app.config.from_object(Development)
+
+#instanciating SQLAlchemy
+db=SQLAlchemy(app)
+
+
+#creating tables
+from models.Inventory import InventoryModel
+    
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 #creating of endpoints/routes
 #1. declaration of a route
-#2. a function embeded to the route
+#2. a function embeded to the 
+
+
 
 @app.route('/')
 def hello_world():
