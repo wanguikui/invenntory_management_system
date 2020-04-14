@@ -27,6 +27,8 @@ db=SQLAlchemy(app)
 
 #creating tables
 from models.Inventory import InventoryModel
+from models.Sales import SalesModel
+from models.Stock import StockModel
     
 @app.before_first_request
 def create_tables():
@@ -108,6 +110,9 @@ def inventories():
         print(buying_price)
         print(selling_price)
 
+        new_inv= InventoryModel(name=name,inv_type=inv_type,buying_price=buying_price,selling_price=selling_price)
+        new_inv.add_inventories()
+        
         
         
 

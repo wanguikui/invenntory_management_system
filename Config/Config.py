@@ -9,7 +9,7 @@ class Development(Config):
     SQLALCHEMY_DATABASE_URI='postgresql://postgres:wagatagati12!@127.0.0.1:5432/inventory_management_system'
 
 
-class Production():
+class Production(Config):
     pass
 
 
