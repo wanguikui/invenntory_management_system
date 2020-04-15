@@ -94,21 +94,26 @@ Inventories
       </tr>
     </thead>
     <tbody>
+      {% set counter=namespace(value=1) %}
+      {% for inv in inventories%}
+
+
+
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
+        <th scope="row">{{counter.value}}</th>
+        <td>{{inv.name}}</td>
+        <td>{{inv.inv_type}}</td>
+        <td>{{inv.buying_price}}</td>
+        <td>{{inv.selling_price}}</td>
         <td>@mdo</td>
         <td>
             <!-- Button trigger modal -->
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addStock">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addStock{{inv.id}}">
     Add Stock
   </button>
   
   <!-- Modal -->
-  <div class="modal fade" id="addStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addStock{{inv.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -118,7 +123,7 @@ Inventories
           </button>
         </div>
         <div class="modal-body">
-            <form action="{{url_for('add_stock')}}" method="POST">
+            <form action="{{url_for('add_stock',invid=inv.id)}}" method="POST">
                 <div class="form-group">
                   <label for="addStock">Stock</label>
                   <input name="stock" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -250,8 +255,20 @@ Inventories
 
         </td>
       </tr>
-      
+      {% set counter.value=counter.value+1 %}
+      {% endfor %}
     </tbody>
+    <tfoot class="thead-dark">
+      <tr>
+        <th scope="col">ID#</th>
+        <th scope="col">NAME</th>
+        <th scope="col">TYPE</th>
+        <th scope="col">BUYING PRICE</th>
+        <th scope="col">SELLING PRICE</th>
+        <th scope="col">STOCK</th>
+        <th scope="col">ACTION</th>
+      </tr>
+    </tfoot>
   </table>
 
 

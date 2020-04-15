@@ -99,6 +99,11 @@ def service():
 
 @app.route('/inventories',methods= ['GET','POST'])
 def inventories():
+
+    inventories=InventoryModel.query.all()
+    
+
+
     if request.method=='POST':
         name= request.form['name']
         inv_type= request.form['type']
@@ -120,14 +125,18 @@ def inventories():
         
 
 
-    return render_template('inventories.html')
+    return render_template('inventories.html', inventories=inventories)
 
 
-@app.route('/add_stock', methods=['POST'])
-def add_stock():
+@app.route('/add_stock/<invid>', methods=['POST'])
+def add_stock(invid):
+    #print(invid)
     if request.method=='POST':
         stock = request.form['stock']
-        print(stock)
+        #print(stock)
+
+        new_stock=StockModel(quantity=stock,invid=invid)
+        new_stock.add_stock()
 
         return redirect(url_for('inventories'))
 
@@ -136,6 +145,10 @@ def make_sale():
     if request.method=='POST':
         make_sale= request.form['quantity']
         print(make_sale)
+
+        new_sale=SalesModel(quantity=make_sale,invid=1)
+        new_sale.add_sale()
+
 
         return redirect(url_for('inventories'))
 
