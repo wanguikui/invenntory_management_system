@@ -15,6 +15,15 @@ class InventoryModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+        #classMethod
+
+    @classmethod
+    def fetch_all_inventories(cls):
+        return cls.query.all()
+    
+
+    
+
 
     
 

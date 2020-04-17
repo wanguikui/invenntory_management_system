@@ -105,7 +105,16 @@ Inventories
         <td>{{inv.inv_type}}</td>
         <td>{{inv.buying_price}}</td>
         <td>{{inv.selling_price}}</td>
-        <td>@mdo</td>
+        <td>
+          {% for each in remaining_stock %}
+            {% if each [0]==inv.id%}
+            {{each[1]}}
+            {% endif %}
+
+          {% endfor %}
+
+
+        </td>
         <td>
             <!-- Button trigger modal -->
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addStock{{inv.id}}">
@@ -145,12 +154,12 @@ Inventories
 
 
             <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#makeSale">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#makeSale{{inv.id}}">
     Make Sale
   </button>
   
   <!-- Modal -->
-  <div class="modal fade" id="makeSale" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="makeSale{{inv.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -161,7 +170,7 @@ Inventories
         </div>
         <div class="modal-body">
 
-            <form action="{{url_for('make_sale')}}" method="POST">
+            <form action="{{url_for('make_sale',invid=inv.id)}}" method="POST">
                 <div class="form-group">
                   <label for="makeSale">Quantity</label>
                   <input name="quantity" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">

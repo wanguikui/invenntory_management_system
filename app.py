@@ -24,6 +24,9 @@ app.config.from_object(Development)
 #instanciating SQLAlchemy
 db=SQLAlchemy(app)
 
+conn = psycopg2.connect(" dbname='inventory_management_system' user='postgres' host='localhost' port='5432' password='wagatagati12!' ")
+
+cur = conn.cursor()
 
 #creating tables
 from models.Inventory import InventoryModel
@@ -100,8 +103,31 @@ def service():
 @app.route('/inventories',methods= ['GET','POST'])
 def inventories():
 
-    inventories=InventoryModel.query.all()
+    inventories=InventoryModel.fetch_all_inventories()
     
+    cur.execute("""
+SELECT invid, SUM(quantity)as "remaining_stock"
+FROM(
+SELECT st.invid, SUM(quantity)as "quantity"
+	FROM public.new_stock as st
+	GROUP BY invid
+	
+	UNION ALL
+	
+SELECT sa.invid, -SUM(quantity)as "quantity"
+	FROM public.new_sales as sa
+	GROUP BY invid
+	)
+	stsa
+	GROUP BY invid
+	ORDER BY invid;
+    
+    
+    
+    
+    """)
+    remaining_stock=cur.fetchall()
+    print(remaining_stock)
 
 
     if request.method=='POST':
@@ -125,7 +151,7 @@ def inventories():
         
 
 
-    return render_template('inventories.html', inventories=inventories)
+    return render_template('inventories.html', inventories=inventories,remaining_stock=remaining_stock)
 
 
 @app.route('/add_stock/<invid>', methods=['POST'])
@@ -140,13 +166,14 @@ def add_stock(invid):
 
         return redirect(url_for('inventories'))
 
-@app.route('/make_sale', methods=['POST'])
-def make_sale():
+@app.route('/make_sale/<invid>', methods=['POST'])
+def make_sale(invid):
+    print(invid)
     if request.method=='POST':
         make_sale= request.form['quantity']
         print(make_sale)
 
-        new_sale=SalesModel(quantity=make_sale,invid=1)
+        new_sale=SalesModel(quantity=make_sale,invid=invid)
         new_sale.add_sale()
 
 
@@ -176,9 +203,7 @@ def contact_us():
 @app.route('/data_visualization')
 def data_visualization():
 
-    conn = psycopg2.connect(" dbname='inventory_management_system' user='postgres' host='localhost' port='5432' password='wagatagati12!' ")
-
-    cur = conn.cursor()
+    
 
     cur.execute("""
     SELECT type, count(type)
