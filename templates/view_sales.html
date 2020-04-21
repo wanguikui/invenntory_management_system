@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{%block title%}
+
+View Sales
+
+{% endblock%}
+
+{% block content %}
+<br>
+<a href="{{url_for('inventories')}}">
+<button type="button" class="btn btn-primary">Return to inventories</button>
+</a>
+<br>
+<hr>
+
+
+
+
+
+
+<h2> Sales of {{inv_name.name}}</h2>
+
+
+
+
+<table class="table table-striped" id="salesTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Created At</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+
+        {% set counter=namespace(value=1)%}
+        {% for each in sales %}
+
+      <tr>
+        <th scope="row">{{counter.value}}</th>
+        
+        <td>{{each.quantity}}</td>
+        <td>{{each.created_at}}</td>
+
+            
+
+        
+        
+      </tr>
+      {% set counter.value=counter.value+1%}
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -52,6 +52,19 @@
           
         </div>
       </nav>
+      
+      <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+      </div>
 
 
     
@@ -81,6 +94,10 @@
 <script>
   $(document).ready( function () {
     $('#invTable').DataTable();
+} );
+
+$(document).ready( function () {
+    $('#salesTable').DataTable();
 } );
 </script>
 </body>

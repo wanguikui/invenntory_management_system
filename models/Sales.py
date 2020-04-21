@@ -11,3 +11,7 @@ class SalesModel(db.Model):
     def add_sale(self):
         db.session.add(self)
         db.session.commit()
+        
+    @classmethod
+    def get_sales_by_id(cls,invid):
+        return cls.query.filter_by(invid=invid).all()

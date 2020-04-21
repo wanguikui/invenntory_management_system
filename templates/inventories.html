@@ -39,8 +39,8 @@ Inventories
                 <label for="Type">Type</label>
                 <select name="type" class="form-control" id="exampleFormControlSelect1">
                   <option></option>
-                  <option>Fruits</option>
-                  <option>Vegetable</option>
+                  <option>Product</option>
+                  <option>Service</option>
                   
                 </select>
               </div>
@@ -192,17 +192,19 @@ Inventories
     </div>
   </div>
 
-
+          <a href="{{url_for('view_sales',invid=inv.id)}}">
             <button type="button" class="btn btn-warning">View Sale</button>
+          </a>
+            
 
 
             <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editInventory">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editInventory{{inv.id}}">
   Edit Inventory
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="editInventory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editInventory{{inv.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -213,17 +215,17 @@ Inventories
       </div>
       <div class="modal-body">
 
-        <form action="{{url_for('edit_inv')}}" method="POST">
+        <form action="{{url_for('edit_inv',invid=inv.id)}}" method="POST">
             <div class="form-group">
               <label for="Name">Name</label>
-              <input name="name" type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input name="name" value="{{inv.name}}" type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
               <small id="emailHelp" class="form-text text-muted"></small>
             </div>
 
             <div class="form-group">
                 <label for="Type">Type</label>
                 <select name="type" class="form-control" id="exampleFormControlSelect1">
-                  <option></option>
+                  <option>{{inv.inv_type}}</option>
                   <option>Product</option>
                   <option>Service</option>
                   
@@ -232,13 +234,13 @@ Inventories
 
               <div class="form-group">
                 <label for="bp">Buying Price</label>
-                <input name="buying_price" type="float" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input name="buying_price" value="{{inv.buying_price}}" type="float" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <small id="emailHelp" class="form-text text-muted"></small>
               </div>
 
               <div class="form-group">
                 <label for="sp">Selling Price</label>
-                <input name="selling_price" type="float" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input name="selling_price" value="{{inv.selling_price}}" type="float" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <small id="emailHelp" class="form-text text-muted"></small>
               </div>
 
@@ -258,8 +260,12 @@ Inventories
 </div>
 
 
+            
+            
+            <a href="{{url_for('delete_inventory',invid=inv.id)}}">
+              <button type="button" class="btn btn-danger">Delete Inventory</button>
 
-            <button type="button" class="btn btn-danger">Delete Inventory</button>
+            </a>
 
 
         </td>

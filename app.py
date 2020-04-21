@@ -1,7 +1,7 @@
 #importing
 #import <filename>
 #from filename import <.....>
-from flask import Flask, render_template ,request,redirect,url_for
+from flask import Flask, render_template ,request,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
 
 from Config.Config import Development, Production
@@ -130,9 +130,13 @@ SELECT sa.invid, -SUM(quantity)as "quantity"
     print(remaining_stock)
 
 
+    
+
+
     if request.method=='POST':
         name= request.form['name']
         inv_type= request.form['type']
+        
         buying_price= request.form['buying_price']
         selling_price= request.form['selling_price']
 
@@ -145,7 +149,7 @@ SELECT sa.invid, -SUM(quantity)as "quantity"
         new_inv.add_inventories()
         
         
-        
+        flash('Inventory added Successfully','primary')
 
         return redirect(url_for('inventories'))
         
@@ -180,8 +184,9 @@ def make_sale(invid):
         return redirect(url_for('inventories'))
 
 
-@app.route('/edit_inv', methods=['POST'])
-def edit_inv():
+@app.route('/edit_inv/<invid>', methods=['POST'])
+def edit_inv(invid):
+    record=InventoryModel.query.filter_by(id=invid).first()
     if request.method=='POST':
         name= request.form['name']
         inv_type= request.form['type']
@@ -192,6 +197,14 @@ def edit_inv():
         print(inv_type)
         print(buying_price)
         print(selling_price)
+
+        if record:
+            record.name = name
+            record.inv_type = inv_type
+            record.buying_price = buying_price
+            record.selling_price = selling_price
+
+            db.session.commit()
 
         return redirect(url_for('inventories'))
 
@@ -299,7 +312,27 @@ def data_visualization():
 
     return render_template('charts.html',pie=pie_data,line=line_data)
 
+@app.route('/view_sales/<invid>')
+def view_sales(invid):
 
+    sales=SalesModel.get_sales_by_id(invid)
+    inv_name=InventoryModel.query.filter_by(id=invid).first()
+
+    return render_template('view_sales.html', sales=sales,invid=invid, inv_name=inv_name)
+
+@app.route('/delete/<invid>')
+def delete_inventory(invid):
+    #print(invid)
+    record=InventoryModel.query.filter_by(id=invid).first()
+    if record:
+        db.session.delete(record)
+        db.session.commit()
+    else:
+        print('Record does not exist')
+    
+    flash('Record Deleted','danger')
+    
+    return redirect(url_for('inventories'))
 
 
 #run your app
