@@ -129,6 +129,12 @@ SELECT sa.invid, -SUM(quantity)as "quantity"
     remaining_stock=cur.fetchall()
     print(remaining_stock)
 
+    
+
+    
+
+    
+
 
     
 
@@ -173,6 +179,38 @@ def add_stock(invid):
 @app.route('/make_sale/<invid>', methods=['POST'])
 def make_sale(invid):
     print(invid)
+
+
+    cur.execute(f"""
+    SELECT invid, SUM(quantity)as "remaining_stock"
+FROM(
+SELECT st.invid, SUM(quantity)as "quantity"
+	FROM public.new_stock as st
+	GROUP BY invid
+	
+	UNION ALL
+	
+SELECT sa.invid, -SUM(quantity)as "quantity"
+	FROM public.new_sales as sa
+	GROUP BY invid
+	)
+	stsa
+	WHERE invid=invid
+	GROUP BY invid
+	ORDER By invid;
+    
+    """)
+    st=cur.fetchall()
+    print(st)
+
+    if st[0][1]>int(quantity):
+        new_sale.add_quantity()
+    else:
+        return "No Stock Available"
+
+
+
+
     if request.method=='POST':
         make_sale= request.form['quantity']
         print(make_sale)
@@ -187,6 +225,8 @@ def make_sale(invid):
 @app.route('/edit_inv/<invid>', methods=['POST'])
 def edit_inv(invid):
     record=InventoryModel.query.filter_by(id=invid).first()
+
+    
     if request.method=='POST':
         name= request.form['name']
         inv_type= request.form['type']
@@ -317,6 +357,7 @@ def view_sales(invid):
 
     sales=SalesModel.get_sales_by_id(invid)
     inv_name=InventoryModel.query.filter_by(id=invid).first()
+    
 
     return render_template('view_sales.html', sales=sales,invid=invid, inv_name=inv_name)
 

@@ -30,6 +30,8 @@ View Sales
         <th scope="col">#</th>
         <th scope="col">Quantity</th>
         <th scope="col">Created At</th>
+        <th scope="col">Selling Price</th>
+        <th scope="col">Total</th>
         
       </tr>
     </thead>
@@ -43,6 +45,8 @@ View Sales
         
         <td>{{each.quantity}}</td>
         <td>{{each.created_at}}</td>
+        <td>{{inv_name.selling_price}}</td>
+        <td>{{inv_name.selling_price*each.quantity}}</td>
 
             
 
