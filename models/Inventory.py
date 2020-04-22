@@ -9,7 +9,7 @@ class InventoryModel(db.Model):
     selling_price=db.Column(db.Float, nullable=False)
 
     sales = db.relationship('SalesModel', backref='inventories', lazy=True)
-    stock = db.relationship('StockModel', backref='inventories',lazy=True)
+    stock = db.relationship('StockModel', backref='inventories', cascade="all, delete-orphan",lazy=True)
 
     def add_inventories(self):
         db.session.add(self)

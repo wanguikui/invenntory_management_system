@@ -129,14 +129,6 @@ SELECT sa.invid, -SUM(quantity)as "quantity"
     remaining_stock=cur.fetchall()
     print(remaining_stock)
 
-    
-
-    
-
-    
-
-
-    
 
 
     if request.method=='POST':
@@ -181,32 +173,7 @@ def make_sale(invid):
     print(invid)
 
 
-    cur.execute(f"""
-    SELECT invid, SUM(quantity)as "remaining_stock"
-FROM(
-SELECT st.invid, SUM(quantity)as "quantity"
-	FROM public.new_stock as st
-	GROUP BY invid
-	
-	UNION ALL
-	
-SELECT sa.invid, -SUM(quantity)as "quantity"
-	FROM public.new_sales as sa
-	GROUP BY invid
-	)
-	stsa
-	WHERE invid=invid
-	GROUP BY invid
-	ORDER By invid;
     
-    """)
-    st=cur.fetchall()
-    print(st)
-
-    if st[0][1]>int(quantity):
-        new_sale.add_quantity()
-    else:
-        return "No Stock Available"
 
 
 
