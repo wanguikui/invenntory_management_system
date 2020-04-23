@@ -47,10 +47,10 @@ def create_tables():
 
 
 
-@app.route('/base.html')
-def hello_world():
+#@app.route('/base.html')
+#def hello_world():
     
-    return render_template('base.html')
+    #return '<h1>Welcome to web Development</h1>'
 
 #@app.route('/home')
 #def home():
@@ -93,7 +93,7 @@ def multiplying (p, t):
 def my_story(name, age, town):
     return f'My name is: {name} <p> I am {age} Years Old <p>  I live in: {town}'
 
-@app.route('/index')
+@app.route('/')
 def index():
     return render_template('index.html')
 
