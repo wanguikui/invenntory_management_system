@@ -47,9 +47,9 @@ def create_tables():
 
 
 
-@app.route('/')
-def hello_world():
-    return '<h1>Welcome to web Development</h1>'
+#@app.route('/')
+#def hello_world():
+    #return '<h1>Welcome to web Development</h1>'
 
 #@app.route('/home')
 #def home():
