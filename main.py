@@ -4,6 +4,8 @@
 from flask import Flask, render_template ,request,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
 
+from markupsafe import Markup
+
 from Config.Config import Development, Production
 
 
@@ -19,13 +21,15 @@ app = Flask(__name__)
 
 
 #Loading configurations
-app.config.from_object(Development)
+app.config.from_object(Production)
 
 #instanciating SQLAlchemy
 db=SQLAlchemy(app)
 
-conn = psycopg2.connect(" dbname='inventory_management_system' user='postgres' host='localhost' port='5432' password='wagatagati12!' ")
+#conn = psycopg2.connect(" dbname='inventory_management_system' user='postgres' host='localhost' port='5432' password='wagatagati12!' ")
 
+conn= psycopg2.connect("User='gilkahqjevhnwe' host='ec2-52-201-55-4.compute-1.amazonaws.com' database='d6sa56nv73mkjh' port='5432' password='16cf303eb194d57d2ed6514153ce474dca171a7914266a5b09c4df9d520e70ed'")
+                
 cur = conn.cursor()
 
 #creating tables
@@ -147,7 +151,7 @@ SELECT sa.invid, -SUM(quantity)as "quantity"
         new_inv.add_inventories()
         
         
-        flash('Inventory added Successfully','primary')
+        flash(Markup('Inventory added Successfully'),'success')
 
         return redirect(url_for('inventories'))
         
@@ -173,8 +177,22 @@ def make_sale(invid):
     print(invid)
 
 
+    cur.execute(f"""
+    SELECT invid, sum(quantity) as "remaining_stock" 		
+FROM (SELECT st.invid, sum(quantity) as "quantity" 		
+FROM public.new_stock as st 		
+GROUP BY invid 			 			
+union all 			  			
+SELECT sa.invid, - sum(quantity) as "quantity" 		
+FROM public.new_sales as sa 		
+GROUP BY invid) as stsa 		
+WHERE invid={invid}		
+GROUP BY invid; 
     
+    """)
 
+    stock=cur.fetchall()
+    print(stock)
 
 
 
@@ -182,8 +200,12 @@ def make_sale(invid):
         make_sale= request.form['quantity']
         print(make_sale)
 
-        new_sale=SalesModel(quantity=make_sale,invid=invid)
-        new_sale.add_sale()
+        if int (stock[0][1]) > int (make_sale):
+
+            new_sale=SalesModel(quantity=make_sale,invid=invid)
+            new_sale.add_sale()
+        else:
+            return 'no stock'
 
 
         return redirect(url_for('inventories'))
