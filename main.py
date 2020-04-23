@@ -47,9 +47,9 @@ def create_tables():
 
 
 
-#@app.route('/')
-#def hello_world():
-    #return '<h1>Welcome to web Development</h1>'
+@app.route('/')
+def hello_world():
+    return '<h1>Welcome to web Development</h1>'
 
 #@app.route('/home')
 #def home():
@@ -67,45 +67,45 @@ def create_tables():
 #def contact():
     #return '<h1>Contact Us</h1>'
 
-# @app.route ('/name/<name>')
-# def my_name(name):
-#     return f'<h1>My Name is {name}</h1>'
+@app.route ('/name/<name>')
+def my_name(name):
+    return f'<h1>My Name is {name}</h1>'
     
 
-# @app.route('/add/<a>/<b>')
-# def adding(a, b):
-#     sum = int(a)+int(b)
-#     return str(sum)
+@app.route('/add/<a>/<b>')
+def adding(a, b):
+    sum = int(a)+int(b)
+    return str(sum)
 
 
-# @app.route('/divide/<x>/<y>')
-# def dividing (x, y):
-#     sum = int(x)/int(y)
-#     return str(sum)
+@app.route('/divide/<x>/<y>')
+def dividing (x, y):
+    sum = int(x)/int(y)
+    return str(sum)
 
-# @app.route('/multiply/<p>/<t>')
-# def multiplying (p, t):
-#     sum = int(p)*int(t)
-#     return str(sum)
+@app.route('/multiply/<p>/<t>')
+def multiplying (p, t):
+    sum = int(p)*int(t)
+    return str(sum)
 
-# @app.route('/bio/<name>/<age>/<town>')
-# def my_story(name, age, town):
-#     return f'My name is: {name} <p> I am {age} Years Old <p>  I live in: {town}'
+@app.route('/bio/<name>/<age>/<town>')
+def my_story(name, age, town):
+    return f'My name is: {name} <p> I am {age} Years Old <p>  I live in: {town}'
 
-# @app.route('/index')
-# def index():
-#     return render_template('index.html')
+@app.route('/index')
+def index():
+    return render_template('index.html')
 
-# @app.route('/about_us')
-# def about_uss():
-#     return render_template('about.html')
+@app.route('/about_us')
+def about_uss():
+    return render_template('about.html')
 
-# @app.route('/service')
-# def service():
-#     return render_template('service.html')
+@app.route('/service')
+def service():
+    return render_template('service.html')
 
- @app.route('/inventories',methods= ['GET','POST'])
- def inventories():
+@app.route('/inventories',methods= ['GET','POST'])
+def inventories():
 
     inventories=InventoryModel.fetch_all_inventories()
     
