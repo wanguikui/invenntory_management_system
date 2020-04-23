@@ -250,9 +250,9 @@ def data_visualization():
     
 
     cur.execute("""
-    SELECT type, count(type)
-	FROM public.inventories
-	GROUP BY type;
+    SELECT inv_type, count(inv_type)
+	FROM public.new_inventories
+	GROUP BY inv_type;
     """)
 
     product_service = cur.fetchall()
@@ -267,7 +267,7 @@ def data_visualization():
     #('Machakos',30),
     #('Kiambu',7)
     #]
-    pie_chart.title="Distibution of Fruits and Vegetables"
+    pie_chart.title="Distibution of Products and Services"
     for each in product_service:
     
         pie_chart.add(each[0],each[1])
@@ -291,8 +291,8 @@ def data_visualization():
 
     cur.execute("""
     SELECT EXTRACT(MONTH FROM s.created_at) as sales_month, sum(quantity*selling_price)as total_sales
-    from sales as s
-    join inventories as i on s.invid = i.id
+    from new_sales as s
+    join new_inventories as i on s.invid = i.id
     GROUP BY sales_month
     ORDER BY sales_month asc
     
