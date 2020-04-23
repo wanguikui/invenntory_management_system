@@ -28,7 +28,7 @@ db=SQLAlchemy(app)
 
 #conn = psycopg2.connect(" dbname='inventory_management_system' user='postgres' host='localhost' port='5432' password='wagatagati12!' ")
 
-conn= psycopg2.connect("user='gilkahqjevhnwe' host='ec2-52-201-55-4.compute-1.amazonaws.com' database='d6sa56nv73mkjh' port='5432' password='16cf303eb194d57d2ed6514153ce474dca171a7914266a5b09c4df9d520e70ed'")
+conn= psycopg2.connect("user='gilkahqjevhnwe' host='ec2-52-201-55-4.compute-1.amazonaws.com' dbname='d6sa56nv73mkjh' port='5432' password='16cf303eb194d57d2ed6514153ce474dca171a7914266a5b09c4df9d520e70ed'")
                 
 cur = conn.cursor()
 
