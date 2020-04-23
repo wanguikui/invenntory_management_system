@@ -50,7 +50,7 @@ def create_tables():
 @app.route('/base.html')
 def hello_world():
     
-    return '<h1>Welcome to web Development</h1>'
+    return render_template('base.html')
 
 #@app.route('/home')
 #def home():
